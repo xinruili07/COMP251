@@ -18,13 +18,20 @@ public class Multiply{
         int[] g = new int[2];
         int[] h = new int[2];
 
+        // Take only the rightmost size part of the inputs
+        x = x % (int) Math.pow(2.0, size);
+        y = y % (int) Math.pow(2.0, size);
+
+        //Base Case
         if (size == 1) {
             result[0] = x*y;
             result[1] = 1;
             return result;
         }
 
+        // Inductive Step
         else {
+
             int m = (int) Math.ceil(size / 2.0);
             int a = (int) (x / Math.pow(2, m));
             int b = (int) (x % Math.pow(2, m));
@@ -51,31 +58,29 @@ public class Multiply{
         int[] f = new int[2];
         int[] g = new int[2];
 
+        // Take only the rightmost size part of the inputs
+        x = x % (int) Math.pow(2.0, size);
+        y = y % (int) Math.pow(2.0, size);
+
+        // Base Case
         if (size == 1) {
             result[0] = x*y;
             result[1] = 1;
             return result;
         }
 
+        // Inductive Step
         else {
             int m = (int) Math.ceil(size / 2.0);
-            int a = (int) Math.floor(x >> m);
-            int b = (int) (x % (1 << m));
-            int c = (int) Math.floor(y >> m);
-            int d = (int) (y % (1 << m));
-
-            if(b < 0) {
-                b += 1 << m;
-            }
-            if(d < 0) {
-                d += 1 << m;
-            }
+            int a = (int) (x / Math.pow(2, m));
+            int b = (int) (x % Math.pow(2, m));
+            int c = (int) (y / Math.pow(2, m));
+            int d = (int) (y % Math.pow(2, m));
 
             e = karatsuba(m, a, c);
             f = karatsuba(m, b, d);
             g = karatsuba(m,a-b,c-d);
-
-            result[0] = (e[0] << (2*m)) + ((e[0] + f[0] - g[0]) << m) + f[0];
+            result[0] = ((int)(Math.pow(2, (2*m)))) * e[0] + ((int)(Math.pow(2, m))) * (e[0] + f[0] - g[0]) + f[0];
             result[1] = (e[1] + f[1] + g[1]) + 6*m;
             return result;
         }

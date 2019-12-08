@@ -31,12 +31,16 @@ public class GlobalMinCut {
         Map<Character, ArrayList<Character>> S = new HashMap<Character, ArrayList<Character>>();
 
         // TODO: Initialize S(v) = {v} for each v
+        // Initially S(v) = v for each v
         for (Character node : graph.getNodes()) {
             ArrayList<Character> nodesContracted = new ArrayList<>();
             nodesContracted.add(node);
             S.put(node, nodesContracted);
         }
-        
+
+        // Run the contraction algorithm. After each contraction of an edge e = (u, v) you must
+        // update S(v), i.e. all the nodes that were in the supernode u must now be added to the
+        // supernode v, because we just merged u into v
         while (graph.getNbNodes() > 2) {
 
             // select an edge randomly (DO NOT CHANGE THIS LINE)
@@ -49,6 +53,7 @@ public class GlobalMinCut {
             for (int i = 0; i < S.get(u).size(); i++) {
                 S.get(v).add(S.get(u).get(i));
             }
+
             S.remove(u);
 
             // TODO: fill in the rest
@@ -56,8 +61,7 @@ public class GlobalMinCut {
         }
         
         // TODO: assemble the output object
-        ArrayList<Character> keys = new ArrayList<Character>(S.keySet());
-        for (Character key : keys) {
+        for (Character key : S.keySet()) {
             cut.add(S.get(key));
         }
         return cut;
@@ -81,6 +85,7 @@ public class GlobalMinCut {
         do  {
             
 			// TODO: use global_min_cut()
+            // copy the graph
             Graph newGraph = new Graph(graph);
             cut = global_min_cut(newGraph);
 

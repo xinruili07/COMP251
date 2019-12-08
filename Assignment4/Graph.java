@@ -82,7 +82,11 @@ public class Graph {
 
         // TODO: implement me
 
+        // Remove the edge e = (u, v)
         ArrayList<Edge> edgesCopy = new ArrayList<Edge>(edges);
+
+        // Remove edges that had one end equal to u and other equal to v.
+        // Fixed ConcurrentModificationException by using a copy of the original list
         for (Edge edge: edgesCopy) {
 
             if (edge.node_1 == u && edge.node_2 == v) {
@@ -92,7 +96,7 @@ public class Graph {
                 edges.remove(edge);
             }
         }
-
+        // For all remaining edges, replace all occurrences of u with v
         for (Edge edge : edges) {
             if (edge.node_1 == u) {
                 edge.node_1 = v;
@@ -101,6 +105,7 @@ public class Graph {
                 edge.node_2 = v;
             }
         }
+        // remove the node u
         removeNode(u);
 
     }
